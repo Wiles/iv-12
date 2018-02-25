@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name tubes)(type KiCad)(uri C:/Users/samue/workspace/iv-12/tubes.pretty)(options "")(descr ""))
+)
