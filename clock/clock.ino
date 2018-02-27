@@ -2,7 +2,7 @@
 
 RTClock rtclock (RTCSEL_LSE); // initialise
 
-#define LATCH_PIN 0x0004
+#define LATCH_PIN PA4
 #define CLOCK_PIN 0x0002
 #define DATA_PIN  0x0001
 
@@ -26,8 +26,6 @@ byte buffer[] = {
 
 int c = 0;
 void secondsHandler() {
-  Serial.println("Blink");
-  Serial.println(millis());
   c = (c + 1) % 10;
 }
 
@@ -35,11 +33,14 @@ void secondsHandler() {
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
 //  GPIOA->regs->CRL |= 0x00000003;
-  pinMode(PA2, OUTPUT);
+  pinMode(LATCH_PIN, OUTPUT);
   pinMode(PA1, OUTPUT);
   pinMode(PA0, OUTPUT);
+  digitalWrite(PA0, LOW);
+  digitalWrite(PA1, LOW);
+  digitalWrite(LATCH_PIN, LOW);
   GPIOA->regs->ODR |= DATA_PIN;
-  Serial.begin(115200);
+//  SYSTICK_BASE->CSR = SYSTICK_CSR_CLKSOURCE_CORE;
   rtclock.attachSecondsInterrupt(secondsHandler);
   
 }
@@ -71,9 +72,11 @@ void writeGrids(byte activeGrid) {
 
 void toggleLatch() {
 //  PORTH |= LATCH_PIN;
-  GPIOA->regs->ODR |= LATCH_PIN;
+//  GPIOA->regs->ODR |= LATCH_PIN;
 //  PORTH &= !LATCH_PIN;
-  GPIOA->regs->ODR &= !LATCH_PIN;
+//  GPIOA->regs->ODR &= !LATCH_PIN;
+  digitalWrite(LATCH_PIN, HIGH);
+  digitalWrite(LATCH_PIN, LOW);
 }
 
 void shiftOutBit(byte data) {

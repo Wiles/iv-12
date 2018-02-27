@@ -1,133 +1,4 @@
-EESchema Schematic File Version 3
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:iv12
-LIBS:74xgxx
-LIBS:ac-dc
-LIBS:actel
-LIBS:allegro
-LIBS:Altera
-LIBS:analog_devices
-LIBS:battery_management
-LIBS:bbd
-LIBS:bosch
-LIBS:brooktre
-LIBS:cmos_ieee
-LIBS:Connector
-LIBS:dc-dc
-LIBS:diode
-LIBS:driver_gate
-LIBS:DSP_Microchip_DSPIC33
-LIBS:elec-unifil
-LIBS:ESD_Protection
-LIBS:Espressif
-LIBS:FPGA_Actel
-LIBS:ftdi
-LIBS:gennum
-LIBS:graphic
-LIBS:graphic_symbols
-LIBS:hc11
-LIBS:infineon
-LIBS:intersil
-LIBS:ir
-LIBS:Lattice
-LIBS:LED
-LIBS:leds
-LIBS:LEM
-LIBS:Logic_74xgxx
-LIBS:Logic_74xx
-LIBS:Logic_CMOS_4000
-LIBS:Logic_CMOS_IEEE
-LIBS:logic_programmable
-LIBS:Logic_TTL_IEEE
-LIBS:logo
-LIBS:maxim
-LIBS:MCU_Microchip_PIC10
-LIBS:MCU_Microchip_PIC12
-LIBS:MCU_Microchip_PIC16
-LIBS:MCU_Microchip_PIC18
-LIBS:MCU_Microchip_PIC24
-LIBS:MCU_Microchip_PIC32
-LIBS:MCU_NXP_Kinetis
-LIBS:MCU_NXP_LPC
-LIBS:MCU_NXP_S08
-LIBS:MCU_Parallax
-LIBS:MCU_ST_STM8
-LIBS:MCU_ST_STM32
-LIBS:MCU_Texas_MSP430
-LIBS:mechanical
-LIBS:microchip_dspic33dsc
-LIBS:microchip_pic10mcu
-LIBS:microchip_pic12mcu
-LIBS:microchip_pic16mcu
-LIBS:microchip_pic18mcu
-LIBS:microchip_pic24mcu
-LIBS:microchip_pic32mcu
-LIBS:modules
-LIBS:Motor
-LIBS:motor_drivers
-LIBS:motors
-LIBS:msp430
-LIBS:nordicsemi
-LIBS:nxp
-LIBS:nxp_armmcu
-LIBS:onsemi
-LIBS:Oscillators
-LIBS:Power_Management
-LIBS:powerint
-LIBS:pspice
-LIBS:references
-LIBS:Relay
-LIBS:relays
-LIBS:rfcom
-LIBS:RFSolutions
-LIBS:Sensor_Current
-LIBS:sensors
-LIBS:silabs
-LIBS:stm8
-LIBS:stm32
-LIBS:supertex
-LIBS:Switch
-LIBS:switches
-LIBS:transf
-LIBS:Transformer
-LIBS:Transistor
-LIBS:triac_thyristor
-LIBS:ttl_ieee
-LIBS:Valve
-LIBS:video
-LIBS:wiznet
-LIBS:Worldsemi
-LIBS:Xicor
-LIBS:zetex
-LIBS:Zilog
+EESchema Schematic File Version 4
 LIBS:clock-cache
 EELAYER 26 0
 EELAYER END
@@ -144,7 +15,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L iv12 U1
+L clock-rescue:iv12-iv12 U1
 U 1 1 5A91DFFF
 P 7400 2300
 F 0 "U1" H 7678 2353 60  0000 L CNN
@@ -155,7 +26,7 @@ F 3 "" H 7400 2300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L iv12 U2
+L clock-rescue:iv12-iv12 U2
 U 1 1 5A91E02B
 P 9500 2250
 F 0 "U2" H 9778 2303 60  0000 L CNN
@@ -166,7 +37,7 @@ F 3 "" H 9500 2250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L iv12 U3
+L clock-rescue:iv12-iv12 U3
 U 1 1 5A91E085
 P 10650 2250
 F 0 "U3" H 10928 2303 60  0000 L CNN
@@ -177,7 +48,7 @@ F 3 "" H 10650 2250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L iv12 U4
+L clock-rescue:iv12-iv12 U4
 U 1 1 5A91E101
 P 11750 2200
 F 0 "U4" H 12028 2253 60  0000 L CNN
@@ -190,7 +61,7 @@ $EndComp
 Wire Wire Line
 	7400 2900 7400 3000
 $Comp
-L GND #PWR01
+L clock-rescue:GND-power1 #PWR01
 U 1 1 5A91E1F4
 P 7400 3000
 F 0 "#PWR01" H 7400 2750 50  0001 C CNN
@@ -201,7 +72,7 @@ F 3 "" H 7400 3000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +1V5 #PWR02
+L clock-rescue:+1V5-power1 #PWR02
 U 1 1 5A91E241
 P 7300 1500
 F 0 "#PWR02" H 7300 1350 50  0001 C CNN
@@ -214,7 +85,7 @@ $EndComp
 Wire Wire Line
 	7300 1500 7300 1700
 $Comp
-L STM32F103C8Tx U5
+L clock-rescue:STM32F103C8Tx-MCU_ST_STM32 U5
 U 1 1 5A91EBC2
 P 8600 6850
 F 0 "U5" H 5850 8600 50  0000 C CNN
@@ -225,7 +96,7 @@ F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/da
 	1    0    0    -1  
 $EndComp
 $Comp
-L +24V #PWR03
+L clock-rescue:+24V-power1 #PWR03
 U 1 1 5A91EF5F
 P 7500 1500
 F 0 "#PWR03" H 7500 1350 50  0001 C CNN
@@ -238,7 +109,7 @@ $EndComp
 Wire Wire Line
 	7500 1500 7500 1700
 $Comp
-L GND #PWR04
+L clock-rescue:GND-power1 #PWR04
 U 1 1 5A91F12F
 P 8550 8750
 F 0 "#PWR04" H 8550 8500 50  0001 C CNN
@@ -251,7 +122,7 @@ $EndComp
 Wire Wire Line
 	8400 8650 8400 8700
 Wire Wire Line
-	8400 8700 8700 8700
+	8400 8700 8500 8700
 Wire Wire Line
 	8500 8700 8500 8650
 Wire Wire Line
@@ -264,7 +135,7 @@ Wire Wire Line
 	8550 8700 8550 8750
 Connection ~ 8550 8700
 $Comp
-L +3V3 #PWR05
+L clock-rescue:+3V3-power1 #PWR05
 U 1 1 5A91F2F0
 P 8550 4950
 F 0 "#PWR05" H 8550 4800 50  0001 C CNN
@@ -277,7 +148,7 @@ $EndComp
 Wire Wire Line
 	8400 5050 8400 5000
 Wire Wire Line
-	8400 5000 8700 5000
+	8400 5000 8500 5000
 Wire Wire Line
 	8500 5000 8500 5050
 Wire Wire Line
@@ -290,7 +161,7 @@ Wire Wire Line
 	8550 5000 8550 4950
 Connection ~ 8550 5000
 $Comp
-L Crystal Y2
+L clock-rescue:Crystal-device1 Y2
 U 1 1 5A91F67E
 P 5050 6600
 F 0 "Y2" V 5004 6731 50  0000 L CNN
@@ -303,9 +174,9 @@ $EndComp
 Wire Wire Line
 	5500 6550 5700 6550
 Wire Wire Line
-	4900 6450 5700 6450
+	4900 6450 5050 6450
 $Comp
-L C_Small C3
+L clock-rescue:C_Small-device1 C3
 U 1 1 5A91F7CD
 P 4800 6450
 F 0 "C3" V 4900 6350 50  0000 C CNN
@@ -316,7 +187,7 @@ F 3 "" H 4800 6450 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C_Small C4
+L clock-rescue:C_Small-device1 C4
 U 1 1 5A91F813
 P 4800 6750
 F 0 "C4" V 4900 6650 50  0000 C CNN
@@ -327,7 +198,7 @@ F 3 "" H 4800 6750 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR06
+L clock-rescue:GND-power1 #PWR06
 U 1 1 5A91F8E7
 P 4500 6850
 F 0 "#PWR06" H 4500 6600 50  0001 C CNN
@@ -338,7 +209,7 @@ F 3 "" H 4500 6850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Crystal Y1
+L clock-rescue:Crystal-device1 Y1
 U 1 1 5A91F9CB
 P 5050 6100
 F 0 "Y1" V 5004 6231 50  0000 L CNN
@@ -353,15 +224,15 @@ Wire Wire Line
 Wire Wire Line
 	5500 6150 5500 6250
 Wire Wire Line
-	5500 6250 4900 6250
+	5500 6250 5050 6250
 Wire Wire Line
 	5700 6050 5500 6050
 Wire Wire Line
 	5500 6050 5500 5950
 Wire Wire Line
-	5500 5950 4900 5950
+	5500 5950 5050 5950
 $Comp
-L C_Small C2
+L clock-rescue:C_Small-device1 C2
 U 1 1 5A920032
 P 4800 6250
 F 0 "C2" V 4700 6150 50  0000 C CNN
@@ -375,18 +246,18 @@ Connection ~ 5050 6450
 Wire Wire Line
 	4700 6450 4500 6450
 Wire Wire Line
-	4500 5950 4500 6850
+	4500 5950 4500 6250
 Wire Wire Line
 	5500 6750 5500 6550
 Wire Wire Line
-	4900 6750 5500 6750
+	4900 6750 5050 6750
 Connection ~ 5050 6750
 Wire Wire Line
 	4700 6750 4500 6750
 Connection ~ 4500 6750
 Connection ~ 5050 6250
 $Comp
-L C_Small C1
+L clock-rescue:C_Small-device1 C1
 U 1 1 5A92041E
 P 4800 5950
 F 0 "C1" V 4700 5850 50  0000 C CNN
@@ -404,7 +275,7 @@ Wire Wire Line
 	4700 6250 4500 6250
 Connection ~ 4500 6250
 $Comp
-L +1V5 #PWR07
+L clock-rescue:+1V5-power1 #PWR07
 U 1 1 5A92097C
 P 9400 1450
 F 0 "#PWR07" H 9400 1300 50  0001 C CNN
@@ -417,7 +288,7 @@ $EndComp
 Wire Wire Line
 	9400 1450 9400 1650
 $Comp
-L +24V #PWR08
+L clock-rescue:+24V-power1 #PWR08
 U 1 1 5A920983
 P 9600 1450
 F 0 "#PWR08" H 9600 1300 50  0001 C CNN
@@ -430,7 +301,7 @@ $EndComp
 Wire Wire Line
 	9600 1450 9600 1650
 $Comp
-L +1V5 #PWR09
+L clock-rescue:+1V5-power1 #PWR09
 U 1 1 5A920995
 P 10550 1450
 F 0 "#PWR09" H 10550 1300 50  0001 C CNN
@@ -443,7 +314,7 @@ $EndComp
 Wire Wire Line
 	10550 1450 10550 1650
 $Comp
-L +24V #PWR010
+L clock-rescue:+24V-power1 #PWR010
 U 1 1 5A92099C
 P 10750 1450
 F 0 "#PWR010" H 10750 1300 50  0001 C CNN
@@ -456,7 +327,7 @@ $EndComp
 Wire Wire Line
 	10750 1450 10750 1650
 $Comp
-L +1V5 #PWR011
+L clock-rescue:+1V5-power1 #PWR011
 U 1 1 5A9209C4
 P 11650 1400
 F 0 "#PWR011" H 11650 1250 50  0001 C CNN
@@ -469,7 +340,7 @@ $EndComp
 Wire Wire Line
 	11650 1400 11650 1600
 $Comp
-L +24V #PWR012
+L clock-rescue:+24V-power1 #PWR012
 U 1 1 5A9209CB
 P 11850 1400
 F 0 "#PWR012" H 11850 1250 50  0001 C CNN
@@ -481,51 +352,10 @@ F 3 "" H 11850 1400 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	11850 1400 11850 1600
-$Comp
-L CONN_01X04 J1
-U 1 1 5A920C48
-P 5550 10650
-F 0 "J1" H 5628 10691 50  0000 L CNN
-F 1 "SWD" H 5628 10600 50  0000 L CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x04_Pitch2.54mm" H 5550 10650 50  0001 C CNN
-F 3 "" H 5550 10650 50  0001 C CNN
-	1    5550 10650
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR013
-U 1 1 5A920F1C
-P 5250 10900
-F 0 "#PWR013" H 5250 10650 50  0001 C CNN
-F 1 "GND" H 5255 10727 50  0000 C CNN
-F 2 "" H 5250 10900 50  0001 C CNN
-F 3 "" H 5250 10900 50  0001 C CNN
-	1    5250 10900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5250 10900 5250 10800
-Wire Wire Line
-	5250 10800 5350 10800
-$Comp
-L +3V3 #PWR014
-U 1 1 5A920FA9
-P 5250 10400
-F 0 "#PWR014" H 5250 10250 50  0001 C CNN
-F 1 "+3V3" H 5265 10573 50  0000 C CNN
-F 2 "" H 5250 10400 50  0001 C CNN
-F 3 "" H 5250 10400 50  0001 C CNN
-	1    5250 10400
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5250 10400 5250 10500
-Wire Wire Line
-	5250 10500 5350 10500
 Wire Wire Line
 	9500 2850 9500 2950
 $Comp
-L GND #PWR015
+L clock-rescue:GND-power1 #PWR015
 U 1 1 5A921CDC
 P 9500 2950
 F 0 "#PWR015" H 9500 2700 50  0001 C CNN
@@ -538,7 +368,7 @@ $EndComp
 Wire Wire Line
 	10650 2850 10650 2950
 $Comp
-L GND #PWR016
+L clock-rescue:GND-power1 #PWR016
 U 1 1 5A921CEF
 P 10650 2950
 F 0 "#PWR016" H 10650 2700 50  0001 C CNN
@@ -551,7 +381,7 @@ $EndComp
 Wire Wire Line
 	11750 2800 11750 2900
 $Comp
-L GND #PWR017
+L clock-rescue:GND-power1 #PWR017
 U 1 1 5A921D3E
 P 11750 2900
 F 0 "#PWR017" H 11750 2650 50  0001 C CNN
@@ -562,7 +392,7 @@ F 3 "" H 11750 2900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Battery_Cell BT1
+L clock-rescue:Battery_Cell-device1 BT1
 U 1 1 5A9220F4
 P 850 10650
 F 0 "BT1" H 968 10746 50  0000 L CNN
@@ -581,7 +411,7 @@ VBAT
 Wire Wire Line
 	850  10350 850  10450
 $Comp
-L GND #PWR018
+L clock-rescue:GND-power1 #PWR018
 U 1 1 5A922335
 P 850 10850
 F 0 "#PWR018" H 850 10600 50  0001 C CNN
@@ -596,172 +426,268 @@ Wire Wire Line
 Wire Wire Line
 	850  10350 950  10350
 $Comp
-L C_Small C7
+L clock-rescue:C_Small-device1 C7
 U 1 1 5A92C1A1
-P 2700 10650
-F 0 "C7" H 2792 10696 50  0000 L CNN
-F 1 "104" H 2792 10605 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2700 10650 50  0001 C CNN
-F 3 "" H 2700 10650 50  0001 C CNN
-	1    2700 10650
+P 2700 10600
+F 0 "C7" H 2792 10646 50  0000 L CNN
+F 1 "104" H 2792 10555 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2700 10600 50  0001 C CNN
+F 3 "" H 2700 10600 50  0001 C CNN
+	1    2700 10600
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C8
+L clock-rescue:C_Small-device1 C8
 U 1 1 5A92C295
-P 3050 10650
-F 0 "C8" H 3142 10696 50  0000 L CNN
-F 1 "104" H 3142 10605 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3050 10650 50  0001 C CNN
-F 3 "" H 3050 10650 50  0001 C CNN
-	1    3050 10650
+P 3050 10600
+F 0 "C8" H 3142 10646 50  0000 L CNN
+F 1 "104" H 3142 10555 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3050 10600 50  0001 C CNN
+F 3 "" H 3050 10600 50  0001 C CNN
+	1    3050 10600
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C5
+L clock-rescue:C_Small-device1 C5
 U 1 1 5A92C32D
-P 2000 10650
-F 0 "C5" H 2092 10696 50  0000 L CNN
-F 1 "104" H 2092 10605 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2000 10650 50  0001 C CNN
-F 3 "" H 2000 10650 50  0001 C CNN
-	1    2000 10650
+P 2000 10600
+F 0 "C5" H 2092 10646 50  0000 L CNN
+F 1 "104" H 2092 10555 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2000 10600 50  0001 C CNN
+F 3 "" H 2000 10600 50  0001 C CNN
+	1    2000 10600
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C6
+L clock-rescue:C_Small-device1 C6
 U 1 1 5A92C333
-P 2350 10650
-F 0 "C6" H 2442 10696 50  0000 L CNN
-F 1 "104" H 2442 10605 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2350 10650 50  0001 C CNN
-F 3 "" H 2350 10650 50  0001 C CNN
-	1    2350 10650
+P 2350 10600
+F 0 "C6" H 2442 10646 50  0000 L CNN
+F 1 "104" H 2442 10555 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2350 10600 50  0001 C CNN
+F 3 "" H 2350 10600 50  0001 C CNN
+	1    2350 10600
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2000 10400 2000 10550
+	2000 10350 2000 10450
 Wire Wire Line
-	2000 10500 3400 10500
+	2000 10450 2350 10450
 Wire Wire Line
-	2350 10500 2350 10550
+	2350 10450 2350 10500
 Wire Wire Line
-	2700 10500 2700 10550
-Connection ~ 2350 10500
+	2700 10450 2700 10500
+Connection ~ 2350 10450
 Wire Wire Line
-	3050 10500 3050 10550
-Connection ~ 2700 10500
+	3050 10450 3050 10500
+Connection ~ 2700 10450
 Wire Wire Line
-	2000 10750 2000 10900
+	2000 10700 2000 10750
 Wire Wire Line
-	2000 10800 3400 10800
+	2000 10750 2350 10750
 Wire Wire Line
-	2350 10800 2350 10750
+	2350 10750 2350 10700
 Wire Wire Line
-	2700 10800 2700 10750
-Connection ~ 2350 10800
+	2700 10750 2700 10700
+Connection ~ 2350 10750
 Wire Wire Line
-	3050 10800 3050 10750
-Connection ~ 2700 10800
+	3050 10750 3050 10700
+Connection ~ 2700 10750
 $Comp
-L GND #PWR019
+L clock-rescue:GND-power1 #PWR019
 U 1 1 5A92C5A3
-P 2000 10900
-F 0 "#PWR019" H 2000 10650 50  0001 C CNN
-F 1 "GND" H 2005 10727 50  0000 C CNN
-F 2 "" H 2000 10900 50  0001 C CNN
-F 3 "" H 2000 10900 50  0001 C CNN
-	1    2000 10900
+P 2000 10850
+F 0 "#PWR019" H 2000 10600 50  0001 C CNN
+F 1 "GND" H 2005 10677 50  0000 C CNN
+F 2 "" H 2000 10850 50  0001 C CNN
+F 3 "" H 2000 10850 50  0001 C CNN
+	1    2000 10850
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3V3 #PWR020
+L clock-rescue:+3V3-power1 #PWR020
 U 1 1 5A92C6B7
-P 2000 10400
-F 0 "#PWR020" H 2000 10250 50  0001 C CNN
-F 1 "+3V3" H 2015 10573 50  0000 C CNN
-F 2 "" H 2000 10400 50  0001 C CNN
-F 3 "" H 2000 10400 50  0001 C CNN
-	1    2000 10400
+P 2000 10350
+F 0 "#PWR020" H 2000 10200 50  0001 C CNN
+F 1 "+3V3" H 2015 10523 50  0000 C CNN
+F 2 "" H 2000 10350 50  0001 C CNN
+F 3 "" H 2000 10350 50  0001 C CNN
+	1    2000 10350
 	1    0    0    -1  
 $EndComp
-Connection ~ 2000 10500
-Connection ~ 2000 10800
+Connection ~ 2000 10450
+Connection ~ 2000 10750
 $Comp
-L C_Small C9
+L clock-rescue:C_Small-device1 C9
 U 1 1 5A92CBFF
-P 3400 10650
-F 0 "C9" H 3492 10696 50  0000 L CNN
-F 1 "104" H 3492 10605 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3400 10650 50  0001 C CNN
-F 3 "" H 3400 10650 50  0001 C CNN
-	1    3400 10650
+P 3400 10600
+F 0 "C9" H 3492 10646 50  0000 L CNN
+F 1 "104" H 3492 10555 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3400 10600 50  0001 C CNN
+F 3 "" H 3400 10600 50  0001 C CNN
+	1    3400 10600
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3400 10500 3400 10550
-Connection ~ 3050 10500
+	3400 10450 3400 10500
+Connection ~ 3050 10450
 Wire Wire Line
-	3400 10800 3400 10750
-Connection ~ 3050 10800
+	3400 10750 3400 10700
+Connection ~ 3050 10750
+Wire Wire Line
+	8500 8700 8550 8700
+Wire Wire Line
+	8600 8700 8700 8700
+Wire Wire Line
+	8550 8700 8600 8700
+Wire Wire Line
+	8500 5000 8550 5000
+Wire Wire Line
+	8600 5000 8700 5000
+Wire Wire Line
+	8550 5000 8600 5000
+Wire Wire Line
+	5050 6450 5700 6450
+Wire Wire Line
+	5050 6750 5500 6750
+Wire Wire Line
+	4500 6750 4500 6850
+Wire Wire Line
+	5050 6250 4900 6250
+Wire Wire Line
+	5050 5950 4900 5950
+Wire Wire Line
+	4500 6450 4500 6750
+Wire Wire Line
+	4500 6250 4500 6450
+Wire Wire Line
+	2350 10450 2700 10450
+Wire Wire Line
+	2700 10450 3050 10450
+Wire Wire Line
+	2350 10750 2700 10750
+Wire Wire Line
+	2700 10750 3050 10750
+Wire Wire Line
+	2000 10450 2000 10500
+Wire Wire Line
+	2000 10750 2000 10850
+Wire Wire Line
+	3050 10450 3400 10450
+Wire Wire Line
+	3050 10750 3400 10750
 $Comp
-L Barrel_Jack J2
-U 1 1 5A92CF0D
-P 4050 10650
-F 0 "J2" H 4128 10975 50  0000 C CNN
-F 1 "Barrel_Jack" H 4128 10884 50  0000 C CNN
-F 2 "Connectors:Barrel_Jack_CUI_PJ-036AH-SMT" H 4100 10610 50  0001 C CNN
-F 3 "~" H 4100 10610 50  0001 C CNN
-	1    4050 10650
+L clock-rescue:USB_OTG-conn1 J1
+U 1 1 5A935077
+P 4100 10350
+F 0 "J1" H 4155 10817 50  0000 C CNN
+F 1 "USB_OTG" H 4155 10726 50  0000 C CNN
+F 2 "Connectors_USB:USB_Micro-B_Molex_47346-0001" H 4250 10300 50  0001 C CNN
+F 3 "" H 4250 10300 50  0001 C CNN
+	1    4100 10350
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR021
-U 1 1 5A92CFDF
-P 4450 10850
-F 0 "#PWR021" H 4450 10600 50  0001 C CNN
-F 1 "GND" H 4455 10677 50  0000 C CNN
-F 2 "" H 4450 10850 50  0001 C CNN
-F 3 "" H 4450 10850 50  0001 C CNN
-	1    4450 10850
+L clock-rescue:GND-power1 #PWR0101
+U 1 1 5A93740C
+P 4400 10850
+F 0 "#PWR0101" H 4400 10600 50  0001 C CNN
+F 1 "GND" H 4405 10677 50  0000 C CNN
+F 2 "" H 4400 10850 50  0001 C CNN
+F 3 "" H 4400 10850 50  0001 C CNN
+	1    4400 10850
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4350 10650 4450 10650
+	4000 10750 4000 10800
 Wire Wire Line
-	4450 10650 4450 10850
+	4000 10800 4100 10800
 Wire Wire Line
-	4350 10750 4450 10750
-Connection ~ 4450 10750
+	4100 10800 4100 10750
+Wire Wire Line
+	4100 10800 4400 10800
+Connection ~ 4100 10800
+Wire Wire Line
+	4400 10550 4400 10800
+Connection ~ 4400 10800
+Wire Wire Line
+	4400 10800 4400 10850
 $Comp
-L +VDC #PWR022
-U 1 1 5A92D129
-P 4450 10450
-F 0 "#PWR022" H 4450 10350 50  0001 C CNN
-F 1 "+VDC" H 4450 10725 50  0000 C CNN
-F 2 "" H 4450 10450 50  0001 C CNN
-F 3 "" H 4450 10450 50  0001 C CNN
-	1    4450 10450
+L clock-rescue:+5V-power1 #PWR0102
+U 1 1 5A93DB27
+P 4500 9950
+F 0 "#PWR0102" H 4500 9800 50  0001 C CNN
+F 1 "+5V" H 4515 10123 50  0000 C CNN
+F 2 "" H 4500 9950 50  0001 C CNN
+F 3 "" H 4500 9950 50  0001 C CNN
+	1    4500 9950
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4450 10450 4450 10550
+	4500 10150 4400 10150
+$Comp
+L clock-rescue:R_Small-device1 R1
+U 1 1 5A940083
+P 4750 10350
+F 0 "R1" V 4850 10450 50  0000 C CNN
+F 1 "22R" V 4850 10300 50  0000 C CNN
+F 2 "Resistors_SMD:R_0603_HandSoldering" H 4750 10350 50  0001 C CNN
+F 3 "" H 4750 10350 50  0001 C CNN
+	1    4750 10350
+	0    -1   -1   0   
+$EndComp
+$Comp
+L clock-rescue:R_Small-device1 R2
+U 1 1 5A94014A
+P 4750 10450
+F 0 "R2" V 4650 10550 50  0000 C CNN
+F 1 "22R" V 4650 10400 50  0000 C CNN
+F 2 "Resistors_SMD:R_0603_HandSoldering" H 4750 10450 50  0001 C CNN
+F 3 "" H 4750 10450 50  0001 C CNN
+	1    4750 10450
+	0    -1   -1   0   
+$EndComp
 Wire Wire Line
-	4450 10550 4350 10550
-Text GLabel 11600 8050 2    60   Input ~ 0
-SWDIO
-Text GLabel 11600 8150 2    60   Input ~ 0
-SWCLK
-Text GLabel 5250 10600 0    60   Input ~ 0
-SWDIO
-Text GLabel 5250 10700 0    60   Input ~ 0
-SWCLK
+	4400 10350 4650 10350
 Wire Wire Line
-	5250 10600 5350 10600
+	4650 10450 4400 10450
+Text GLabel 5000 10350 2    50   Input ~ 0
+D+
+Text GLabel 5000 10450 2    50   Input ~ 0
+D-
 Wire Wire Line
-	5350 10700 5250 10700
+	5000 10350 4900 10350
 Wire Wire Line
-	11600 8050 11500 8050
+	4850 10450 5000 10450
+Text GLabel 11650 7950 2    50   Input ~ 0
+D+
 Wire Wire Line
-	11500 8150 11600 8150
+	11650 7850 11500 7850
+Text GLabel 11650 7850 2    50   Input ~ 0
+D-
+Wire Wire Line
+	11650 7950 11500 7950
+$Comp
+L clock-rescue:R_Small-device1 R3
+U 1 1 5A936D11
+P 4900 10100
+F 0 "R3" H 4959 10146 50  0000 L CNN
+F 1 "10k" H 4959 10055 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603_HandSoldering" H 4900 10100 50  0001 C CNN
+F 3 "" H 4900 10100 50  0001 C CNN
+	1    4900 10100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4900 10200 4900 10350
+Connection ~ 4900 10350
+Wire Wire Line
+	4900 10350 4850 10350
+Wire Wire Line
+	4500 9950 4500 10000
+Wire Wire Line
+	4900 10000 4500 10000
+Connection ~ 4500 10000
+Wire Wire Line
+	4500 10000 4500 10150
 $EndSCHEMATC
