@@ -1,4 +1,4 @@
-update=2018-12-01 17:35:38
+update=2018-12-30 09:04:29
 version=1
 last_client=pcbnew
 [general]
@@ -69,18 +69,7 @@ SolderPasteClearance=0
 SolderPasteRatio=-0
 [pcbnew/Netclasses]
 [pcbnew/Netclasses/1]
-Name=24v
-Clearance=0.152
-TrackWidth=0.4
-ViaDiameter=0.6
-ViaDrill=0.3
-uViaDiameter=0.3
-uViaDrill=0.1
-dPairWidth=0.2
-dPairGap=0.25
-dPairViaGap=0.25
-[pcbnew/Netclasses/2]
-Name=5v
+Name=Power
 Clearance=0.152
 TrackWidth=0.4
 ViaDiameter=0.6
