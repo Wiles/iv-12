@@ -2330,16 +2330,14 @@ Text GLabel 7200 5100 0    50   Input ~ 0
 TP5
 Text GLabel 7200 5000 0    50   Input ~ 0
 TP4
-Text GLabel 3600 4950 2    50   Input ~ 0
-TP5
 Text GLabel 3600 5050 2    50   Input ~ 0
+TP5
+Text GLabel 3600 5150 2    50   Input ~ 0
 TP4
 Wire Wire Line
 	3600 5350 3500 5350
 Wire Wire Line
 	3500 5050 3600 5050
-Wire Wire Line
-	3600 4950 3500 4950
 $Comp
 L power:GND #PWR0140
 U 1 1 5CA204E9
@@ -2367,18 +2365,14 @@ $EndComp
 $Comp
 L power:+24V #PWR0150
 U 1 1 5CA60D9F
-P 3900 5050
-F 0 "#PWR0150" H 3900 4900 50  0001 C CNN
-F 1 "+24V" H 3915 5223 50  0000 C CNN
-F 2 "" H 3900 5050 50  0001 C CNN
-F 3 "" H 3900 5050 50  0001 C CNN
-	1    3900 5050
+P 3650 4850
+F 0 "#PWR0150" H 3650 4700 50  0001 C CNN
+F 1 "+24V" H 3665 5023 50  0000 C CNN
+F 2 "" H 3650 4850 50  0001 C CNN
+F 3 "" H 3650 4850 50  0001 C CNN
+	1    3650 4850
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3900 5150 3900 5050
-Wire Wire Line
-	3500 5150 3900 5150
 Wire Wire Line
 	4000 5250 4000 5150
 Wire Wire Line
@@ -2457,4 +2451,10 @@ Wire Wire Line
 Connection ~ 3700 8550
 Wire Wire Line
 	3700 8550 3900 8550
+Wire Wire Line
+	3600 5150 3500 5150
+Wire Wire Line
+	3650 4850 3650 4950
+Wire Wire Line
+	3500 4950 3650 4950
 $EndSCHEMATC
