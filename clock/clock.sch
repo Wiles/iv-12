@@ -1604,17 +1604,6 @@ Wire Wire Line
 	11700 9100 11700 9000
 Wire Wire Line
 	11700 8350 11700 8450
-$Comp
-L Timer_RTC:DS3231M U12
-U 1 1 5C88E5FC
-P 8100 3400
-F 0 "U12" H 7800 3750 50  0000 C CNN
-F 1 "DS3231M" H 8350 3750 50  0000 C CNN
-F 2 "Package_SO:SOIC-16W_7.5x10.3mm_P1.27mm" H 8100 2800 50  0001 C CNN
-F 3 "http://datasheets.maximintegrated.com/en/ds/DS3231.pdf" H 8370 3450 50  0001 C CNN
-	1    8100 3400
-	1    0    0    -1  
-$EndComp
 Text GLabel 7550 3200 0    50   Input ~ 0
 SCL
 Text GLabel 7550 3300 0    50   Input ~ 0
@@ -1648,7 +1637,6 @@ F 3 "~" V 8550 2810 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 NoConn ~ 8600 3200
-NoConn ~ 8600 3500
 Wire Wire Line
 	8100 3000 8100 2750
 $Comp
@@ -2439,4 +2427,52 @@ Wire Wire Line
 	4000 5250 4000 5150
 Wire Wire Line
 	3500 5250 4000 5250
+$Comp
+L Timer_RTC:DS3231M U12
+U 1 1 5C88E5FC
+P 8100 3400
+F 0 "U12" H 7800 3750 50  0000 C CNN
+F 1 "DS3231M" H 8350 3750 50  0000 C CNN
+F 2 "Package_SO:SOIC-16W_7.5x10.3mm_P1.27mm" H 8100 2800 50  0001 C CNN
+F 3 "http://datasheets.maximintegrated.com/en/ds/DS3231.pdf" H 8370 3450 50  0001 C CNN
+	1    8100 3400
+	1    0    0    -1  
+$EndComp
+Text GLabel 9000 3500 2    50   Input ~ 0
+SQW
+Text GLabel 6250 4950 2    50   Input ~ 0
+SQW
+Wire Wire Line
+	6250 4950 6150 4950
+$Comp
+L clock-rescue:R_Small-device1 R41
+U 1 1 5C7F1BCB
+P 8950 3350
+F 0 "R41" H 9009 3396 50  0000 L CNN
+F 1 "10k" H 9009 3305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 8950 3350 50  0001 C CNN
+F 3 "" H 8950 3350 50  0001 C CNN
+	1    8950 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0151
+U 1 1 5C7F27BA
+P 8950 3200
+F 0 "#PWR0151" H 8950 3050 50  0001 C CNN
+F 1 "+5V" H 8965 3373 50  0000 C CNN
+F 2 "" H 8950 3200 50  0001 C CNN
+F 3 "" H 8950 3200 50  0001 C CNN
+	1    8950 3200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8600 3500 8950 3500
+Wire Wire Line
+	8950 3450 8950 3500
+Connection ~ 8950 3500
+Wire Wire Line
+	8950 3500 9000 3500
+Wire Wire Line
+	8950 3200 8950 3250
 $EndSCHEMATC
