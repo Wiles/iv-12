@@ -3908,8 +3908,8 @@
     )
   )
 
-  (gr_text + (at 133.5 124.2) (layer F.SilkS) (tstamp 5C7332C4)
-    (effects (font (size 1 1) (thickness 0.15)))
+  (gr_text + (at 133.5 124.2) (layer B.SilkS) (tstamp 5C7332C4)
+    (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
   )
   (gr_text + (at 168.8 125.8) (layer F.SilkS) (tstamp 5C7330B7)
     (effects (font (size 1 1) (thickness 0.15)))
