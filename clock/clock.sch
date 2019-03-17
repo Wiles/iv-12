@@ -2153,22 +2153,12 @@ Wire Wire Line
 Wire Wire Line
 	6550 4050 6600 4050
 Wire Wire Line
-	6550 4300 6550 4350
-Connection ~ 6550 4350
-Wire Wire Line
 	6600 3950 6600 4050
 Connection ~ 6600 4050
 Wire Wire Line
 	6600 4050 6650 4050
 Wire Wire Line
 	1400 9500 1550 9500
-Wire Wire Line
-	6550 4350 6850 4350
-Wire Wire Line
-	6650 4300 6650 4450
-Connection ~ 6650 4450
-Wire Wire Line
-	6650 4450 6850 4450
 $Comp
 L MCU_Microchip_ATmega:ATmega328P-AU U11
 U 1 1 5C5E70DE
@@ -2184,17 +2174,6 @@ Text GLabel 6250 4550 2    50   Input ~ 0
 RST
 Wire Wire Line
 	6250 4550 6150 4550
-$Comp
-L Device:Crystal_GND3 Y1
-U 1 1 5C910D8A
-P 7000 3700
-F 0 "Y1" V 7200 3650 50  0000 L CNN
-F 1 "16MHz" V 6800 3600 50  0000 L CNN
-F 2 "Crystal:Resonator_SMD_muRata_CSTxExxV-3Pin_3.0x1.1mm_HandSoldering" H 7000 3700 50  0001 C CNN
-F 3 "~" H 7000 3700 50  0001 C CNN
-	1    7000 3700
-	0    -1   1    0   
-$EndComp
 $Comp
 L Connector:Conn_01x06_Female J1
 U 1 1 5C91345F
@@ -2396,10 +2375,6 @@ Wire Wire Line
 	1600 6650 1750 6650
 NoConn ~ 1650 4400
 Wire Wire Line
-	6150 4450 6650 4450
-Wire Wire Line
-	6150 4350 6550 4350
-Wire Wire Line
 	6850 3750 6850 3850
 Wire Wire Line
 	6850 3850 7000 3850
@@ -2445,4 +2420,29 @@ Wire Wire Line
 Connection ~ 5550 2650
 Wire Wire Line
 	5550 2650 5650 2650
+Wire Wire Line
+	6150 4350 6650 4350
+Wire Wire Line
+	6150 4450 6550 4450
+Wire Wire Line
+	6550 4300 6550 4450
+Connection ~ 6550 4450
+Wire Wire Line
+	6550 4450 6850 4450
+Wire Wire Line
+	6650 4300 6650 4350
+Connection ~ 6650 4350
+Wire Wire Line
+	6650 4350 6850 4350
+$Comp
+L Device:Crystal_GND2 Y1
+U 1 1 5C9AFC31
+P 7000 3700
+F 0 "Y1" V 7200 3650 50  0000 L CNN
+F 1 "16 MHz" V 6800 3550 50  0000 L CNN
+F 2 "Crystal:Resonator_SMD_muRata_CSTxExxV-3Pin_3.0x1.1mm_HandSoldering" H 7000 3700 50  0001 C CNN
+F 3 "~" H 7000 3700 50  0001 C CNN
+	1    7000 3700
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC
