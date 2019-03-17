@@ -1,94 +1,151 @@
-#include <RTClock.h>
+#include <Wire.h>
+#include "RTClib.h"
+#include <Adafruit_PWMServoDriver.h>
 
-RTClock rtclock (RTCSEL_LSE); // initialise
 
-#define LATCH_PIN PA4
-#define CLOCK_PIN 0x0002
-#define DATA_PIN  0x0001
+#define PWM_MAX 4096
+#define PWM_MIN 0
+#define STEP_MAX 1024
 
-#define SEGMENT_COUNT 12
-
-byte buffer[] = {
-  B11100110,
-  B11100110, //9
-  B11111110, //8
-  B11100000, //7
-  B10111110, //6
-  
-  B10110110, //5
-  B01100110, //4
-  B11110010, //3
-  B11011010, //2
-  B01100000, //1
-  B11111100, //0
-  B11111111  //-
+RTC_DS3231 rtc;
+Adafruit_PWMServoDriver pwm[2] = {
+  Adafruit_PWMServoDriver(0x40),
+  Adafruit_PWMServoDriver(0x41)
 };
 
-int c = 0;
-void secondsHandler() {
-  c = (c + 1) % 10;
-}
+int numbers[10][7] = {
+  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, }, // 0
+  {PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, }, // 1
+  {PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, }, // 2
+  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MAX, }, // 3 
+  {PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MAX, PWM_MAX, }, // 4
+  {PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, }, // 5
+  {PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, }, // 6
+  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, }, // 7
+  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, }, // 8
+  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, }  // 9
+};
 
-// the setup function runs once when you press reset or power the board
+int currents[32];
+int current = 0;
+int target = 1;
+
+int ones = 8;
+int tens = 9;
+int huns = 0;
+int thous = 1;
+
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-//  GPIOA->regs->CRL |= 0x00000003;
-  pinMode(LATCH_PIN, OUTPUT);
-  pinMode(PA1, OUTPUT);
-  pinMode(PA0, OUTPUT);
-  digitalWrite(PA0, LOW);
-  digitalWrite(PA1, LOW);
-  digitalWrite(LATCH_PIN, LOW);
-  GPIOA->regs->ODR |= DATA_PIN;
-//  SYSTICK_BASE->CSR = SYSTICK_CSR_CLKSOURCE_CORE;
-  rtclock.attachSecondsInterrupt(secondsHandler);
+  Serial.begin(115200);
   
-}
+  Serial.println("Setup Started");
+  pwm[0].begin();
+  pwm[0].setPWMFreq(1600);
+  pwm[1].begin();
+  pwm[1].setPWMFreq(1600);
+  updateDisplay(0, 0);
+  Serial.println("Setup Complete");
 
-// the loop function runs over and over again forever
-void loop() {
-  for (byte i = 0; i < SEGMENT_COUNT; ++i) {
-    writeSegments(buffer[c]);
-    writeGrids(i);
-    toggleLatch();
+  if (!rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    while (1);
   }
+
+  if (rtc.lostPower()) {
+    Serial.println("RTC lost power, lets set the time!");
+    // following line sets the RTC to the date & time this sketch was compiled
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    // This line sets the RTC with an explicit date & time, for example to set
+    // January 21, 2014 at 3am you would call:
+    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+  }
+    DateTime now = rtc.now();
+    
+    Serial.println(now.year(), DEC);
 }
 
-void writeSegments(byte pattern) {
-  for (byte i = 1; i != 0; i <<= 1) {
-    if (pattern & i) {
-      shiftOutBit(1);
+
+void set_display(int chip, int offset, int num) {
+  for (int i = 0; i < 7; ++i) {
+    if (numbers[num][i] == 0) {
+      pwm[chip].setPWM(i + offset, 4096, 0);
     } else {
-      shiftOutBit(0);
+      pwm[chip].setPWM(i + offset, 0, 4096);
     }
   }
 }
 
-void writeGrids(byte activeGrid) {
-  for(byte i = 0; i < SEGMENT_COUNT; ++i) {
-    shiftOutBit(i==activeGrid);
+void set_ones(int num) {
+  set_display(1, 8, num);
+}
+
+void set_tens(int num) {
+  set_display(1, 0, num);
+}
+
+void set_huns(int num) {
+  set_display(0, 8, num);
+}
+
+//void set_thou(int num) {
+//  set_display(0, 0, num);
+//}
+
+void loop() {
+  DateTime now = rtc.now();
+    
+  int minutes = now.minute();
+  int hours = now.hour();
+  Serial.println(hours);
+  Serial.println(minutes);
+  ones = minutes % 10;
+  tens = minutes / 10;
+  huns = hours % 10;
+  thous = hours / 10;
+  set_ones(ones);
+  set_tens(tens);
+  set_huns(huns);
+  set_display(0, 0, thous);
+//  set_thou(thous);
+  delay(1000);
+}
+
+
+
+void wave() {
+  int step = 16;
+  // Drive each PWM in a 'wave'
+  for (uint16_t i=0; i<4096; i += step) {
+    for (uint8_t pwmnum=0; pwmnum < 32; pwmnum++) {
+      int pwmValue = (i + (PWM_MAX/pwmnum)*pwmnum);
+      if (pwmValue >= PWM_MAX) {
+        pwmValue = 4095;
+      }
+      currents[pwmnum] = pwmValue;
+      if (pwmnum >= 16) {
+        pwm[1].setPWM(pwmnum - 16, 0, pwmValue );
+      } else {
+        pwm[0].setPWM(pwmnum, 0, pwmValue );
+      }
+    }
+    if (currents[0] >= 4096 - step) {
+      Serial.println("Break");
+      break;
+    }
+  }
+//  for (int step = 0; step < STEP_MAX; ++step) {
+//    updateDisplay(target, step);
+//  }
+  delay(1);
+}
+
+void updateDisplay(int target, int step) {
+  for (uint8_t pwmnum=0; pwmnum < 32; pwmnum++) {
+    int value = ((numbers[target][pwmnum] * step/(float)STEP_MAX) + (PWM_MAX/16)*pwmnum);
+    if (pwmnum >= 16) {
+      pwm[1].setPWM(pwmnum - 16, 0, PWM_MAX - value );
+    } else {
+      pwm[0].setPWM(pwmnum, 0, PWM_MAX - value );
+    }
   }
 }
-
-void toggleLatch() {
-//  PORTH |= LATCH_PIN;
-//  GPIOA->regs->ODR |= LATCH_PIN;
-//  PORTH &= !LATCH_PIN;
-//  GPIOA->regs->ODR &= !LATCH_PIN;
-  digitalWrite(LATCH_PIN, HIGH);
-  digitalWrite(LATCH_PIN, LOW);
-}
-
-void shiftOutBit(byte data) {
-  // Toggle Data
-//  PORTB ^= data;
-  GPIOA->regs->ODR ^= data;
-
-  // Set clock high
-//  PORTB |=  CLOCK_PIN;
-  GPIOA->regs->ODR |= CLOCK_PIN;
-  // Clear clock and data
-//  PORTB &= !(CLOCK_PIN | DATA_PIN);
-  GPIOA->regs->ODR &= !(CLOCK_PIN | DATA_PIN);
-}
-
