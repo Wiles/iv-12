@@ -36,23 +36,16 @@ int huns = 0;
 int thous = 1;
 
 void setup() {
-  Serial.begin(115200);
-  
-  Serial.println("Setup Started");
   pwm[0].begin();
   pwm[0].setPWMFreq(1600);
   pwm[1].begin();
   pwm[1].setPWMFreq(1600);
-  updateDisplay(0, 0);
-  Serial.println("Setup Complete");
 
   if (!rtc.begin()) {
-    Serial.println("Couldn't find RTC");
     while (1);
   }
 
   if (rtc.lostPower()) {
-    Serial.println("RTC lost power, lets set the time!");
     // following line sets the RTC to the date & time this sketch was compiled
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     // This line sets the RTC with an explicit date & time, for example to set
@@ -60,8 +53,6 @@ void setup() {
     // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
   }
     DateTime now = rtc.now();
-    
-    Serial.println(now.year(), DEC);
 }
 
 
@@ -96,8 +87,6 @@ void loop() {
     
   int minutes = now.minute();
   int hours = now.hour();
-  Serial.println(hours);
-  Serial.println(minutes);
   ones = minutes % 10;
   tens = minutes / 10;
   huns = hours % 10;
@@ -108,44 +97,4 @@ void loop() {
   set_display(0, 0, thous);
 //  set_thou(thous);
   delay(1000);
-}
-
-
-
-void wave() {
-  int step = 16;
-  // Drive each PWM in a 'wave'
-  for (uint16_t i=0; i<4096; i += step) {
-    for (uint8_t pwmnum=0; pwmnum < 32; pwmnum++) {
-      int pwmValue = (i + (PWM_MAX/pwmnum)*pwmnum);
-      if (pwmValue >= PWM_MAX) {
-        pwmValue = 4095;
-      }
-      currents[pwmnum] = pwmValue;
-      if (pwmnum >= 16) {
-        pwm[1].setPWM(pwmnum - 16, 0, pwmValue );
-      } else {
-        pwm[0].setPWM(pwmnum, 0, pwmValue );
-      }
-    }
-    if (currents[0] >= 4096 - step) {
-      Serial.println("Break");
-      break;
-    }
-  }
-//  for (int step = 0; step < STEP_MAX; ++step) {
-//    updateDisplay(target, step);
-//  }
-  delay(1);
-}
-
-void updateDisplay(int target, int step) {
-  for (uint8_t pwmnum=0; pwmnum < 32; pwmnum++) {
-    int value = ((numbers[target][pwmnum] * step/(float)STEP_MAX) + (PWM_MAX/16)*pwmnum);
-    if (pwmnum >= 16) {
-      pwm[1].setPWM(pwmnum - 16, 0, PWM_MAX - value );
-    } else {
-      pwm[0].setPWM(pwmnum, 0, PWM_MAX - value );
-    }
-  }
 }
