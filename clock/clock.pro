@@ -1,4 +1,4 @@
-update=2019-02-17 19:02:39
+update=2019-03-23 15:56:53
 version=1
 last_client=kicad
 [general]
@@ -71,7 +71,7 @@ SolderPasteRatio=-0
 [pcbnew/Netclasses/1]
 Name=Power
 Clearance=0.152
-TrackWidth=0.25
+TrackWidth=0.4
 ViaDiameter=0.6
 ViaDrill=0.3
 uViaDiameter=0.3
