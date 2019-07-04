@@ -7,6 +7,10 @@
 #define PWM_MIN 0
 #define STEP_MAX 1024
 
+#define MODE_BUTTON 8
+#define PLUS_BUTTON 9
+#define MINUS_BUTTON 10
+
 RTC_DS3231 rtc;
 Adafruit_PWMServoDriver pwm[2] = {
   Adafruit_PWMServoDriver(0x40),
@@ -17,7 +21,7 @@ int numbers[10][7] = {
   {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, }, // 0
   {PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, }, // 1
   {PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, }, // 2
-  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MAX, }, // 3 
+  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MAX, }, // 3
   {PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MAX, PWM_MAX, }, // 4
   {PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, }, // 5
   {PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, }, // 6
@@ -35,7 +39,13 @@ int tens = 9;
 int huns = 0;
 int thous = 1;
 
+DateTime now;
+
 void setup() {
+  pinMode(MINUS_BUTTON, INPUT_PULLUP);
+  pinMode(PLUS_BUTTON, INPUT_PULLUP);
+  pinMode(MODE_BUTTON, INPUT_PULLUP);
+  Serial.begin(9600);
   pwm[0].begin();
   pwm[0].setPWMFreq(1600);
   pwm[1].begin();
@@ -44,17 +54,39 @@ void setup() {
   if (!rtc.begin()) {
     while (1);
   }
-
+  rtc.writeSqwPinMode(DS3231_SquareWave1Hz);
   if (rtc.lostPower()) {
     // following line sets the RTC to the date & time this sketch was compiled
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    // This line sets the RTC with an explicit date & time, for example to set
-    // January 21, 2014 at 3am you would call:
-    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+    rtc.adjust(DateTime(2000, 1, 1, 0, 0, 0));
   }
-    DateTime now = rtc.now();
+  now = rtc.now();
+  print_time(now);
 }
 
+void print_time(DateTime now) {
+  int minutes = now.minute();
+  int hours = now.hour();
+  ones = minutes % 10;
+  tens = minutes / 10;
+  huns = hours % 10;
+  thous = hours / 10;
+  set_ones(ones);
+  set_tens(tens);
+  set_huns(huns);
+  set_thou(thous);
+  Serial.print(now.year(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.day(), DEC);
+  Serial.print(" ");
+  Serial.print(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(), DEC);
+  Serial.println();
+}
 
 void set_display(int chip, int offset, int num) {
   for (int i = 0; i < 7; ++i) {
@@ -78,23 +110,95 @@ void set_huns(int num) {
   set_display(0, 8, num);
 }
 
-//void set_thou(int num) {
-//  set_display(0, 0, num);
-//}
+void set_thou(int num) {
+  set_display(0, 0, num);
+}
+
+void set_min_light(int state) {
+  if (state == HIGH) {
+    pwm[1].setPWM(7, 4096, 0);
+    pwm[1].setPWM(15, 4096, 0);
+  } else {
+    pwm[1].setPWM(7, 0, 4096);
+    pwm[1].setPWM(15, 0, 4096);
+  }
+}
+
+void set_hour_light(int state) {
+  if (state == HIGH) {
+    pwm[0].setPWM(7, 4096, 0);
+    pwm[0].setPWM(15, 4096, 0);
+  } else {
+    pwm[0].setPWM(7, 0, 4096);
+    pwm[0].setPWM(15, 0, 4096);
+  }
+}
+
+#define CLOCK 0
+#define SET_HOUR 1
+#define SET_MIN 2
+
+int mode = CLOCK;
+int modeChanged = false;
 
 void loop() {
-  DateTime now = rtc.now();
-    
-  int minutes = now.minute();
-  int hours = now.hour();
-  ones = minutes % 10;
-  tens = minutes / 10;
-  huns = hours % 10;
-  thous = hours / 10;
-  set_ones(ones);
-  set_tens(tens);
-  set_huns(huns);
-  set_display(0, 0, thous);
-//  set_thou(thous);
-  delay(1000);
+  set_min_light(LOW);
+  set_hour_light(LOW);
+  if (mode == CLOCK) {
+    Serial.println("Clock");
+    now = rtc.now();
+    print_time(now);
+  }
+  else if (mode == SET_HOUR) {
+    set_hour_light(HIGH);
+    Serial.println("Hour check");
+    if (digitalRead(PLUS_BUTTON) == LOW) {
+      Serial.println("Hour plus");
+      DateTime future (now + TimeSpan(3600));
+      rtc.adjust(future);
+      print_time(future);
+      now = future;
+    } else if (digitalRead(MINUS_BUTTON) == LOW) {
+      Serial.println("Hour plus");
+      DateTime future (now - TimeSpan(3600));
+      rtc.adjust(future);
+      print_time(future);
+      now = future;
+    }
+  }
+  else if (mode == SET_MIN) {
+    set_min_light(HIGH);
+    Serial.println("Minute check");
+    if (digitalRead(PLUS_BUTTON) == LOW) {
+      Serial.println("Hour plus");
+      DateTime future (now + TimeSpan(60));
+      rtc.adjust(future);
+      print_time(future);
+      now = future;
+    } else if (digitalRead(MINUS_BUTTON) == LOW) {
+      Serial.println("Hour plus");
+      DateTime future (now - TimeSpan(60));
+      rtc.adjust(future);
+      print_time(future);
+      now = future;
+    }
+  } else {
+    Serial.println("Default");
+  }
+
+  if (digitalRead(MODE_BUTTON) == LOW) {
+    if (modeChanged == false) {
+      mode++;
+      modeChanged = true;
+      if (mode > SET_MIN) {
+        mode = CLOCK;
+      }
+      Serial.print("Mode: ");
+      Serial.println(mode);
+    }
+  } else {
+    modeChanged = false;
+  }
+  delay(500);
+  print_time(now);
 }
