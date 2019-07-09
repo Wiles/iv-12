@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include "RTClib.h"
 #include <Adafruit_PWMServoDriver.h>
+#include <EEPROM.h>
 
 
 #define PWM_MAX 4096
@@ -10,12 +11,16 @@
 #define MODE_BUTTON 8
 #define PLUS_BUTTON 9
 #define MINUS_BUTTON 10
+#define HOUR_MODE_BUTTON 11
 
 RTC_DS3231 rtc;
 Adafruit_PWMServoDriver pwm[2] = {
   Adafruit_PWMServoDriver(0x40),
   Adafruit_PWMServoDriver(0x41)
 };
+
+int a = 256;
+int is12Hour = EEPROM.read(a);
 
 int numbers[10][7] = {
   {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, }, // 0
@@ -45,6 +50,7 @@ void setup() {
   pinMode(MINUS_BUTTON, INPUT_PULLUP);
   pinMode(PLUS_BUTTON, INPUT_PULLUP);
   pinMode(MODE_BUTTON, INPUT_PULLUP);
+  pinMode(HOUR_MODE_BUTTON, INPUT_PULLUP);
   Serial.begin(9600);
   pwm[0].begin();
   pwm[0].setPWMFreq(1600);
@@ -68,6 +74,13 @@ void print_time(DateTime now) {
   int hours = now.hour();
   ones = minutes % 10;
   tens = minutes / 10;
+  if (is12Hour) {
+    if (hours > 12) {
+      hours -= 12; 
+    } else if (hours == 0) {
+      hours = 12;
+    }
+  }
   huns = hours % 10;
   thous = hours / 10;
   set_ones(ones);
@@ -146,6 +159,10 @@ void loop() {
   set_hour_light(LOW);
   if (mode == CLOCK) {
     Serial.println("Clock");
+    if (digitalRead(HOUR_MODE_BUTTON) == LOW) {
+      is12Hour = !is12Hour;
+      EEPROM.write(a, is12Hour);
+    }
     now = rtc.now();
     print_time(now);
   }
@@ -160,10 +177,10 @@ void loop() {
       now = future;
     } else if (digitalRead(MINUS_BUTTON) == LOW) {
       Serial.println("Hour plus");
-      DateTime future (now - TimeSpan(3600));
-      rtc.adjust(future);
-      print_time(future);
-      now = future;
+      DateTime past (now - TimeSpan(3600));
+      rtc.adjust(past);
+      print_time(past);
+      now = past;
     }
   }
   else if (mode == SET_MIN) {
@@ -182,8 +199,6 @@ void loop() {
       print_time(future);
       now = future;
     }
-  } else {
-    Serial.println("Default");
   }
 
   if (digitalRead(MODE_BUTTON) == LOW) {
