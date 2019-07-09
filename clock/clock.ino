@@ -1,8 +1,7 @@
 #include <Wire.h>
-#include "RTClib.h"
+#include <RTClib.h>
 #include <Adafruit_PWMServoDriver.h>
 #include <EEPROM.h>
-
 
 #define PWM_MAX 4096
 #define PWM_MIN 0
@@ -39,35 +38,10 @@ int currents[32];
 int current = 0;
 int target = 1;
 
-int ones = 8;
-int tens = 9;
+int ones = 0;
+int tens = 0;
 int huns = 0;
-int thous = 1;
-
-DateTime now;
-
-void setup() {
-  pinMode(MINUS_BUTTON, INPUT_PULLUP);
-  pinMode(PLUS_BUTTON, INPUT_PULLUP);
-  pinMode(MODE_BUTTON, INPUT_PULLUP);
-  pinMode(HOUR_MODE_BUTTON, INPUT_PULLUP);
-  Serial.begin(9600);
-  pwm[0].begin();
-  pwm[0].setPWMFreq(1600);
-  pwm[1].begin();
-  pwm[1].setPWMFreq(1600);
-
-  if (!rtc.begin()) {
-    while (1);
-  }
-  rtc.writeSqwPinMode(DS3231_SquareWave1Hz);
-  if (rtc.lostPower()) {
-    // following line sets the RTC to the date & time this sketch was compiled
-    rtc.adjust(DateTime(2000, 1, 1, 0, 0, 0));
-  }
-  now = rtc.now();
-  print_time(now);
-}
+int thous = 0;
 
 void print_time(DateTime now) {
   int minutes = now.minute();
@@ -150,36 +124,59 @@ void set_hour_light(int state) {
 #define CLOCK 0
 #define SET_HOUR 1
 #define SET_MIN 2
+#define MAX_MODE SET_MIN
 
 int mode = CLOCK;
 int modeChanged = false;
 
+void setup() {
+  pinMode(MINUS_BUTTON, INPUT_PULLUP);
+  pinMode(PLUS_BUTTON, INPUT_PULLUP);
+  pinMode(MODE_BUTTON, INPUT_PULLUP);
+  pinMode(HOUR_MODE_BUTTON, INPUT_PULLUP);
+  Serial.begin(9600);
+  pwm[0].begin();
+  pwm[0].setPWMFreq(1600);
+  pwm[1].begin();
+  pwm[1].setPWMFreq(1600);
+
+  if (!rtc.begin()) {
+    while (1);
+  }
+
+  rtc.writeSqwPinMode(DS3231_SquareWave1Hz);
+
+  if (rtc.lostPower()) {
+    rtc.adjust(DateTime(2000, 1, 1, 0, 0, 0));
+  }
+
+  DateTime now = rtc.now();
+  print_time(now);
+}
+
 void loop() {
   set_min_light(LOW);
   set_hour_light(LOW);
+  DateTime now = rtc.now();
   if (mode == CLOCK) {
     Serial.println("Clock");
     if (digitalRead(HOUR_MODE_BUTTON) == LOW) {
       is12Hour = !is12Hour;
       EEPROM.write(a, is12Hour);
     }
-    now = rtc.now();
-    print_time(now);
   }
   else if (mode == SET_HOUR) {
     set_hour_light(HIGH);
     Serial.println("Hour check");
     if (digitalRead(PLUS_BUTTON) == LOW) {
       Serial.println("Hour plus");
-      DateTime future (now + TimeSpan(3600));
+      DateTime future = (now + TimeSpan(3600));
       rtc.adjust(future);
-      print_time(future);
       now = future;
     } else if (digitalRead(MINUS_BUTTON) == LOW) {
-      Serial.println("Hour plus");
-      DateTime past (now - TimeSpan(3600));
+      Serial.println("Hour minus");
+      DateTime past = (now - TimeSpan(3600));
       rtc.adjust(past);
-      print_time(past);
       now = past;
     }
   }
@@ -187,17 +184,15 @@ void loop() {
     set_min_light(HIGH);
     Serial.println("Minute check");
     if (digitalRead(PLUS_BUTTON) == LOW) {
-      Serial.println("Hour plus");
-      DateTime future (now + TimeSpan(60));
+      Serial.println("Minute plus");
+      DateTime future = (now + TimeSpan(60));
       rtc.adjust(future);
-      print_time(future);
       now = future;
     } else if (digitalRead(MINUS_BUTTON) == LOW) {
-      Serial.println("Hour plus");
-      DateTime future (now - TimeSpan(60));
-      rtc.adjust(future);
-      print_time(future);
-      now = future;
+      Serial.println("Minute minus");
+      DateTime past = (now - TimeSpan(60));
+      rtc.adjust(past);
+      now = past;
     }
   }
 
@@ -205,15 +200,16 @@ void loop() {
     if (modeChanged == false) {
       mode++;
       modeChanged = true;
-      if (mode > SET_MIN) {
+      if (mode > MAX_MODE) {
         mode = CLOCK;
       }
-      Serial.print("Mode: ");
+      Serial.print("Mode change: ");
       Serial.println(mode);
     }
   } else {
     modeChanged = false;
   }
-  delay(500);
+
   print_time(now);
+  delay(500);
 }
