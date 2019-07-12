@@ -7,8 +7,8 @@
 #define PWM_MIN 0
 #define STEP_MAX 1024
 
-#define MODE_BUTTON 8
-#define PLUS_BUTTON 9
+#define PLUS_BUTTON 8
+#define MODE_BUTTON 9
 #define MINUS_BUTTON 10
 #define HOUR_MODE_BUTTON 11
 
@@ -62,11 +62,11 @@ void print_time(DateTime now) {
   set_huns(huns);
   set_thou(thous);
   Serial.print(now.year(), DEC);
-  Serial.print('/');
+  Serial.print('-');
   Serial.print(now.month(), DEC);
-  Serial.print('/');
+  Serial.print('-');
   Serial.print(now.day(), DEC);
-  Serial.print(" ");
+  Serial.print("T");
   Serial.print(now.hour(), DEC);
   Serial.print(':');
   Serial.print(now.minute(), DEC);
@@ -134,6 +134,7 @@ void setup() {
   pinMode(PLUS_BUTTON, INPUT_PULLUP);
   pinMode(MODE_BUTTON, INPUT_PULLUP);
   pinMode(HOUR_MODE_BUTTON, INPUT_PULLUP);
+  
   Serial.begin(9600);
   pwm[0].begin();
   pwm[0].setPWMFreq(1600);
@@ -147,11 +148,10 @@ void setup() {
   rtc.writeSqwPinMode(DS3231_SquareWave1Hz);
 
   if (rtc.lostPower()) {
-    rtc.adjust(DateTime(2000, 1, 1, 0, 0, 0));
+    rtc.adjust(DateTime(2019, 1, 1, 0, 0, 0));
   }
 
-  DateTime now = rtc.now();
-  print_time(now);
+  print_time(rtc.now());
 }
 
 void loop() {
