@@ -5,11 +5,10 @@
 
 #define PWM_MAX 4096
 #define PWM_MIN 0
-#define STEP_MAX 1024
 
-#define PLUS_BUTTON 8
-#define MODE_BUTTON 9
-#define MINUS_BUTTON 10
+#define MODE_BUTTON 8
+#define PLUS_BUTTON 10
+#define MINUS_BUTTON 9
 #define HOUR_MODE_BUTTON 11
 
 RTC_DS3231 rtc;
@@ -19,9 +18,9 @@ Adafruit_PWMServoDriver pwm[2] = {
 };
 
 int a = 256;
-int is12Hour = EEPROM.read(a);
+bool is12Hour = EEPROM.read(a);
 
-int numbers[10][7] = {
+int numbers[11][7] = {
   {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, }, // 0
   {PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, }, // 1
   {PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, }, // 2
@@ -31,7 +30,8 @@ int numbers[10][7] = {
   {PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, }, // 6
   {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, }, // 7
   {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, }, // 8
-  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, }  // 9
+  {PWM_MAX, PWM_MAX, PWM_MAX, PWM_MAX, PWM_MIN, PWM_MAX, PWM_MAX, }, // 9
+  {PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, PWM_MIN, }, // off
 };
 
 int currents[32];
@@ -85,6 +85,20 @@ void set_display(int chip, int offset, int num) {
   }
 }
 
+void display_military_time(bool is12Hour) {
+  if (is12Hour) {
+    set_display(1, 8, 2);
+    set_display(1, 0, 1);
+    set_display(0, 8, 10);
+    set_display(0, 0, 10);
+  } else {
+    set_display(1, 8, 4);
+    set_display(1, 0, 2);
+    set_display(0, 8, 10);
+    set_display(0, 0, 10);
+  }
+}
+
 void set_ones(int num) {
   set_display(1, 8, num);
 }
@@ -124,7 +138,8 @@ void set_hour_light(int state) {
 #define CLOCK 0
 #define SET_HOUR 1
 #define SET_MIN 2
-#define MAX_MODE SET_MIN
+#define SET_MILITARY_TIME 3
+#define MAX_MODE 3
 
 int mode = CLOCK;
 int modeChanged = false;
@@ -160,12 +175,8 @@ void loop() {
   DateTime now = rtc.now();
   if (mode == CLOCK) {
     Serial.println("Clock");
-    if (digitalRead(HOUR_MODE_BUTTON) == LOW) {
-      is12Hour = !is12Hour;
-      EEPROM.write(a, is12Hour);
-    }
-  }
-  else if (mode == SET_HOUR) {
+    print_time(now);
+  } else if (mode == SET_HOUR) {
     set_hour_light(HIGH);
     Serial.println("Hour check");
     if (digitalRead(PLUS_BUTTON) == LOW) {
@@ -179,8 +190,8 @@ void loop() {
       rtc.adjust(past);
       now = past;
     }
-  }
-  else if (mode == SET_MIN) {
+    print_time(now);
+  } else if (mode == SET_MIN) {
     set_min_light(HIGH);
     Serial.println("Minute check");
     if (digitalRead(PLUS_BUTTON) == LOW) {
@@ -194,6 +205,13 @@ void loop() {
       rtc.adjust(past);
       now = past;
     }
+    print_time(now);
+  } else if (mode == SET_MILITARY_TIME) {
+    if (digitalRead(PLUS_BUTTON) == LOW || digitalRead(MINUS_BUTTON) == LOW) {
+      is12Hour = !is12Hour;
+      EEPROM.write(a, is12Hour);
+    }
+    display_military_time(is12Hour);
   }
 
   if (digitalRead(MODE_BUTTON) == LOW) {
@@ -210,6 +228,5 @@ void loop() {
     modeChanged = false;
   }
 
-  print_time(now);
   delay(500);
 }
